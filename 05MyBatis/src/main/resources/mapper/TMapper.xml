@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.CountryDao">
+    <select id="findProvincialById" resultMap="provincialMap">
+            SELECT pid ,pname,countryid FROM `provincial` WHERE pid=#{xx};
+    </select>
+    <resultMap id="provincialMap" type="Provincial">
+            <id property="pId" column="pid"/>
+            <result property="pName" column="pname"/>
+            <association property="country" javaType="Country"
+                         select="selectCountryByCid" column="countryid"/><!--域属性名-->
+    </resultMap>
+    <select id="selectCountryByCid" resultType="Country">
+        select cid,cname from country  where cid=#{xxx}
+    </select>
+
+</mapper>

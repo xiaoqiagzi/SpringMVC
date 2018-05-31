@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--01.配置目标对象-->
+    <bean id="userDao" class="com.hzq.dao.UserDaoImpl"/>
+
+    <!--02.配置切面-->
+    <bean id="myAspectJ" class="com.hzq.Advice.MyAspectJ"/>
+
+    <!--03.注册aspectj需要的切入点-->
+    <aop:config>
+        <!--配置切入点表达式-->
+        <aop:pointcut id="myPonit" expression="execution(* *..UserDao.sleep(..))"/>
+        <aop:pointcut id="myPonit2" expression="execution(* *..UserDao.eat(..))"/>
+        <!--配置切面-->
+        <aop:aspect ref="myAspectJ">
+            <aop:before method="before" pointcut-ref="myPonit"/>
+            <aop:after-returning method="afterReturning" pointcut-ref="myPonit"/>
+            <aop:around method="around" pointcut-ref="myPonit2"/>
+        </aop:aspect>
+    </aop:config>
+
+
+
+</beans>

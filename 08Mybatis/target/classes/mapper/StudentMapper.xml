@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.TeacherDao">
+   <!--设置  集合属性  我们不断的把查询出来的tid当成id再次查询 ，直到没有结果-->
+    <select id="findTeacherBySid" resultMap="studentMap">
+      SELECT t.id,s.sid,sname,t.`name` FROM stu s,middle m,teacher t
+      WHERE s.sid=m.sid AND m.id=t.id AND s.sid=#{xxx}
+    </select>
+    <resultMap id="studentMap" type="Student">
+        <id property="sId" column="sid"/>
+        <result property="sName" column="sname"/>
+        <collection property="teachers" ofType="Teacher" >
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+        </collection>
+    </resultMap>
+    <select id="findTeacherByTid" resultMap="teacherMap">
+        SELECT t.id,s.sid,sname,t.`name` FROM stu s,middle m,teacher t
+        WHERE s.sid=m.sid AND m.id=t.id
+        AND t.`id`=#{xxx}
+    </select>
+    <resultMap id="teacherMap" type="Teacher">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="students" ofType="Student">
+            <id property="sId" column="sid"/>
+            <result property="sName" column="sname"/>
+        </collection>
+    </resultMap>
+</mapper>

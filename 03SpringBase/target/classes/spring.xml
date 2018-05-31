@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置Grade对应的bean-->
+    <bean id="grade" class="com.hzq.bean.Grade" c:id="2" c:gradeName="2年级">
+        <!--p:id="1" p:gradeName="1年级"-->
+
+        <!--01.设值注入   推荐使用    便于阅读
+            <property name="id" value="1"/>
+            <property name="gradeName" value="一年级"/>-->
+       <!-- 构造函数赋值01.<constructor-arg index="0" value="3"/>
+                        <constructor-arg index="1" value="三年级"/>
+        02.<constructor-arg name="id" value="3"/>
+        <constructor-arg name="gradeName" value="三年级"/>
+        03.<constructor-arg  value="3"/>
+        <constructor-arg  value="三年级"/>-->
+        <!--使用c命名空间-->
+        <!--c:id="2" c:gradeName="2年级"-->
+    </bean>
+    <bean id="student" class="com.hzq.bean.Student">
+        <property name="name" value="小黑"/>
+        <property name="grade" ref="grade"/>
+        <property name="names">
+            <array>
+                <value>小黑1</value>
+                <value>小黑2</value>
+            </array>
+        </property>
+        <property name="list">
+            <list>
+                <value>小黑1</value>
+                <value>小黑2</value>
+            </list>
+        </property>
+        <property name="set">
+            <set>
+                <value>小黑1</value>
+                <value>小黑2</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="1" value="1"/>
+                <entry key="name" value="小黑1"/>
+                <entry key="address" value="海淀区"/>
+            </map>
+        </property>
+        <property name="properties">
+            <props><!--properties属性-->
+                <prop key="id">1</prop>
+                <prop key="name">小白</prop>
+                <prop key="address">海淀区</prop>
+            </props>
+        </property>
+
+    </bean>
+</beans>

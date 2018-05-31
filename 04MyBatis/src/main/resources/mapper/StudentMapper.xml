@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.CountryDao">
+    <select id="selectCoutryByIf" resultMap="countryMap">
+        SELECT cid,cname,pid,pname FROM `country` c,`provincial` p
+        WHERE c.`cid`=p.`countryid`
+        AND c.cid=#{xx}
+    </select>
+    <resultMap id="countryMap" type="Country">
+        <id property="cId" column="cid"/>
+        <result property="cName" column="cname"/>
+        <collection property="provincials" ofType="Provincial">
+            <id property="pId" column="pid"/>
+            <result property="pName" column="pname"/>
+        </collection>
+    </resultMap>
+  <!--   延迟加载
+    <select id="selectCountryByCid" resultMap="country">
+        SELECT cid,cname FROM country
+        WHERE cid=#{xxxx}
+    </select>
+    <select id="findCountryByCid" resultMap="Provincial">
+        SELECT pid ,pname FROM provincial
+        WHERE countryid=#{xxx};
+    </select>
+    <resultMap id="country" type="Country">
+        <id property="cId" column="cid"/>
+        <result property="cName" column="cname"/>
+        <collection property="provincials" ofType="Provincial" select="findCountryByCid" column="cid"/>
+    </resultMap>
+    延迟加载-->
+</mapper>

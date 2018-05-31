@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.CountryDao">
+    <!--配置当前xml文件的2级缓存   下面的type使用一个即可
+    LoggingEhcache可以输出日志 -->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>-->
+    <!--useCache="false"-->
+    <select id="findProvincialById" resultMap="provincialMap" >
+            SELECT pid ,pname,countryid FROM `provincial` WHERE pid=#{xx};
+    </select>
+    <resultMap id="provincialMap" type="Provincial">
+            <id property="pId" column="pid"/>
+            <result property="pName" column="pname"/>
+    </resultMap>
+    <!-- 验证增删改 对 二级缓存的影响  flushCache="false" 新增不刷新缓存-->
+    <insert id="addProvincial" flushCache="false" parameterType="Provincial">
+        insert into provincial(pid,pname) values(#{pId},#{pName})
+    </insert>
+
+
+
+</mapper>

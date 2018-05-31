@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.StudentDao">
+    <select id="findById" resultMap="studentMaps">
+        SELECT StuName ,StuAge FROM `tblstudent` WHERE StuId=#{xxx}
+    </select>
+    <resultMap id="studentMaps" type="Student">
+        <id property="id" column="StuId"/><!--只针对于主键的设置-->
+        <result property="age" column="StuAge"/> <!--设置除了主键，集合，对象之外的属性-->
+        <result property="name" column="StuName"/>
+    </resultMap>
+    <select id="findAll" resultMap="Student">
+        SELECT b.CourseId,b.Score FROM tblstudent a,tblscore b WHERE a.StuId=b.StuId
+    </select>
+    <resultMap id="Student" type="Student">
+        <result property="age" column="CourseId"/> <!--设置除了主键，集合，对象之外的属性-->
+        <result property="name" column="Score"/>
+    </resultMap>
+    <select id="findAllStu" resultMap="Students">
+        SELECT StuId ,StuName, StuAge ,StuSex FROM tblstudent WHERE StuName like concat('%',#{name},'%')
+        and StuAge>#{age}
+        AND StuId>#{student.id}
+    </select>
+    <resultMap id="Students" type="Student">
+        <id property="id" column="StuId"/>
+        <result property="age" column="StuAge"/> <!--设置除了主键，集合，对象之外的属性-->
+        <result property="name" column="StuName"/>
+        <result property="sex" column="StuSex"/>
+    </resultMap>
+    <select id="selectByName" resultMap="Students">
+        SELECT StuId ,StuName, StuAge ,StuSex FROM tblstudent WHERE StuName like concat('%',#{0},'%')
+       and StuAge>#{1}
+    </select>
+    <select id="ch" resultMap="Students">
+        SELECT * FROM tblstudent WHERE StuId=#{id} and StuName=#{name}
+
+    </select>
+    <select id="selectfindByIf" resultMap="Student">
+        SELECT * FROM `tblstudent` WHERE 1=1
+          <if test="name!=null and name!=''">
+              and StuName like concat('%',#{name},'%')
+
+          </if>
+          <if test="age!=null and age!=''">
+              and StuAge=#{age}
+          </if>
+    </select>
+    <select id="selectfindByWhere" resultMap="Student">
+        SELECT * FROM `tblstudent`
+        <where>
+            <if test="name!=null and name!=''">
+                and StuName like concat('%',#{name},'%')
+
+            </if>
+            <if test="age!=null and age!=''">
+                and StuAge=#{age}
+            </if>
+        </where>
+    </select>
+    <select id="selectfindByChoose" resultMap="Student">
+        SELECT * FROM `tblstudent`
+        <where>
+          <choose >
+              <when test="name!=null and name!=''">
+                  and StuName like concat('%',#{name},'%')
+              </when>
+              <when test="age!=null and age!=''">
+                  and StuAge=#{age}
+              </when>
+              <otherwise>
+                  id=1007
+              </otherwise>
+          </choose>
+        </where>
+    </select>
+    <select id="selectStudentsByForeachArray" resultMap="Student">
+    SELECT * FROM `tblstudent`
+        <if test="array.length>0">
+            where StuId  in /*(1000,1001,1002)*/
+            <foreach collection="array" item="mid" open="(" separator="," close=")">
+                #{mid}
+            </foreach>
+        </if>
+    </select>
+    <select id="selectStudentsByForeachList" resultMap="Student">
+        SELECT * FROM `tblstudent`
+        <if test="list.size>0">
+            where StuId in
+            <foreach collection="list" item="mid" open="(" separator="," close=")">
+                #{mid}
+            </foreach>
+        </if>
+
+    </select>
+    <select id="selectStudentsByForeachStudent" resultMap="Student">
+    SELECT * FROM `tblstudent`
+        <if test="list.size>0">
+            where StuId in
+            <foreach collection="list" item="mid" open="("  separator="," close=")">
+                #{mid.id}
+            </foreach>
+        </if>
+    </select>
+    <select id="selectStudentsByForeachMap" resultMap="Student">
+    SELECT * FROM `tblstudent`
+        <if test="myMap.keys.size>0">
+            where StuId in
+            <foreach collection="myMap.keys" item="Map" open="(" separator="," close=")">
+                    #{Map}
+            </foreach>
+
+
+        </if>
+    </select>
+</mapper>

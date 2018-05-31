@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--自动装配autowire
+    01.byName:  spring容器会根据实体类中的属性名称，去寻找有没有bean的id是属性名称的
+                如果有则自动注入    *****
+    02.byType: spring容器会根据实体类中的属性的类型，去寻找有没有bean的类型（class）相同的
+                如果有则自动注入
+
+     之后使用注解替换autowire
+     01.@Resource   *****
+     02.@Autowired
+    -->
+    <!--配置人类bean-->
+    <bean id="person" class="com.hzq.bean.Person" autowire="byName">
+        <property name="name" value="小黑"/>
+        <property name="age" value="14"/>
+     </bean>
+    <!--配置Dog对应的bean-->
+    <bean id="dog" class="com.hzq.bean.Dog">
+        <property name="name" value="小黑狗"/>
+        <property name="age" value="14"/>
+    </bean>
+    <!--验证 byType  不能出现超过1个的相同类型-->
+    <bean id="dog2" class="com.hzq.bean.Dog">
+        <property name="name" value="小黑狗22"/>
+        <property name="age" value="22"/>
+    </bean>
+    <!--Spring  el 是 spring3.0之后出现的！-->
+    <bean id="person2" class="com.hzq.bean.Person" autowire="byName">
+        <property name="name" value="#{person.name}"/>
+        <property name="age" value="#{person.age>15?18:13}"/>
+    </bean>
+</beans>

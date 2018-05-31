@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置MyBeanPostprocessor   容器级别的 当前xml文件中所有的bean都会执行MyBeanPostProcessor中的方法-->
+    <bean class="com.hzq.bean.MyBeanPostProcessor"/>
+    <!--配置MyBeanFactoryPostprocessor 容器级别的  同上-->
+    <bean class="com.hzq.bean.MyBeanFactoryPostProcessor"/>
+    <!--配置MyInitAwareBeanpostAdpater  容器级别的  同上-->
+    <bean class="com.hzq.bean.MyInitAwareBeanpostAdpater"/>
+
+
+
+    <!-- 配置Student 的实体对象-->
+    <bean id="student" class="com.hzq.bean.Student" init-method="initMethod" destroy-method="myDestroy">
+        <property name="age" value="20"/>
+        <property name="stuName" value="小黑"/>
+    </bean>
+</beans>

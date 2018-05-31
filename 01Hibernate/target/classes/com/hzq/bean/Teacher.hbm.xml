@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!--
+    package:需要映射的实体类所在的包
+    class节点
+        name :对应的实体类的类名，如果没有书写package,则必须书写完整的限定类名
+        table:书籍库中的表明，如果表明和实体类名一只，可以省略
+        id:表中的主键
+        generator:主键生成策略。主键由谁去创建？？程序猿？Hibernate?数据库
+            assigned：主键是由程序猿自己设置的！
+            identity: 针对于mysql数据库的主键自增 （mysql数据库说了算）
+            sequence: 针对于oracle数据库中的序列
+                <generator class="sequence">
+                  <param name="sequence">序列名称</param>
+               </generator>
+           increment: 首先会产生一条sql select max(id)  from teacher
+                      之后id+1  赋值给主键
+        name :必须和实体类中的属性名一致
+        column ： 必须和数据库中的列名一致，如果列名和属性名一致，可以省略
+-->
+<hibernate-mapping package="com.hzq.bean">
+    <!--
+  lazy="false"  是否懒加载   默认值是true
+  -->
+    <class name="Teacher" table="teacher">
+        <id name="id" column="id">
+            <generator class="assigned"/><!--主键生成策略-->
+        </id>
+        <property name="name"/>
+    </class>
+
+</hibernate-mapping>

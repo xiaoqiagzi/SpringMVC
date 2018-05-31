@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--  这个案例 需要解决的问题：
+   一个代理工厂 配置 多个目标对象！-->
+    <!--01.配置目标对象-->
+    <bean  id="userService" class="com.hzq.service.UserServiceImpl"/>
+    <bean id="userService2" class="com.hzq.service.UserServiceImpl"/>
+    <!--02配置相应的增强类-->
+    <bean id="before" class="com.hzq.Advice.BeforeAdvice"/>
+    <!--03.设置顾问  让目标对象和通知产生关系-->
+    <bean id="myAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <!--配置通知-->
+        <property name="advice" ref="before"/>
+        <!--配置切入点-->
+        <property name="mappedName" value="sleep"/>
+    </bean>
+    <!--04.配置自动的代理生成器 根据名称来的-->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames" value="userService"/>
+        <property name="interceptorNames" value="myAdvisor"/>
+
+    </bean>
+
+
+</beans>

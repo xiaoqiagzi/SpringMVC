@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd">
+<!--01配置目标对象 实际肯定是配置UserServiceImpl-->
+<bean id="userDaoImpl" class="com.hzq.dao.UserDaoImpl"/>
+        <!--02.配置各种通知-->
+        <!--001.前置通知-->
+<bean id="beforeAdvice" class="com.hzq.dao.BeforeAdvice"/>
+        <!--002.后置通知-->
+<bean id="afterAdvice" class="com.hzq.dao.AfterAdvice"/>
+        <!--003.环绕通知-->
+<bean id="aroundAdvice" class="com.hzq.dao.AroundAdvice"/>
+        <!--004.异常通知-->
+<bean id="exceptionAdvice" class="com.hzq.dao.ExceptionAdvice"/>
+    <!--03.需要配置代理工厂bean,来创建代理类！ 从而把各种通知织入到目标对象的目标方法中-->
+    <bean id="userProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--注册了目标对象-->
+        <property name="targetName" value="userDaoImpl"/>
+        <!--注册通知-->
+        <property name="interceptorNames">
+            <array>
+                <value>beforeAdvice</value><!--前置通知-->
+                <value>afterAdvice</value><!--后置通知-->
+                <value>aroundAdvice</value><!--环绕通知-->
+            </array>
+        </property>
+    </bean>
+
+    <!--再次创建一个工厂 来为异常对象服务  因为一个工厂无法为多个对象服务-->
+    <bean id="exceptionProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--注册了目标对象-->
+        <property name="targetName" value="userDaoImpl"/>
+        <!--注册通知-->
+        <property name="interceptorNames">
+            <array>
+                <value>exceptionAdvice</value><!--异常通知-->
+            </array>
+        </property>
+    </bean>
+
+</beans>
